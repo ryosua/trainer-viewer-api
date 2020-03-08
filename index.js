@@ -3,6 +3,7 @@ const { ApolloServer, gql } = require('apollo-server')
 const typeDefs = gql`
     type Hike {
         id: ID
+        miles: Float
         url: String
     }
 
@@ -14,10 +15,12 @@ const typeDefs = gql`
 const hikes = [
     {
         id: '1',
+        miles: 7.8,
         url: 'https://www.alltrails.com/trail/us/colorado/south-boulder-peak-trail'
     },
     {
         id: '2',
+        miles: 2.4,
         url: 'https://www.alltrails.com/explore/trail/us/colorado/keyhole-via-wild-loop-trail'
     }
 ]
