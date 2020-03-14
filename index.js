@@ -1,7 +1,21 @@
 const { ApolloServer, gql } = require('apollo-server')
 const dotenv = require('dotenv')
+const fetch = require('node-fetch')
+const { createHttpLink } = require('apollo-link-http')
+const { InMemoryCache } = require('apollo-cache-inmemory')
+const { ApolloClient } = require('apollo-client')
 
 dotenv.config()
+
+const httpLink = createHttpLink({
+    uri: process.env.GRAPH_CMS_ENDPOINT,
+    fetch: fetch
+})
+
+const client = new ApolloClient({
+    link: httpLink,
+    cache: new InMemoryCache()
+})
 
 const typeDefs = gql`
     type Hike {
@@ -23,38 +37,31 @@ const typeDefs = gql`
     }
 `
 
-const hikes = [
-    {
-        id: '1',
-        carpoolOptions: "Let's meet at the trailhead",
-        elevationGain: 2913,
-        expectedRoundTripTime: 180,
-        name: 'South Boulder Peak Trail',
-        miles: 7.8,
-        parkingLocation: 'https://www.google.com/maps/dir/Current+Location/39.93879,-105.25806',
-        preparationNotes: 'The trail will likely be icy towards the top, bring spikes.',
-        startingElevation: 5630,
-        time: new Date(Date.now()).toISOString(),
-        url: 'https://www.alltrails.com/trail/us/colorado/south-boulder-peak-trail'
-    },
-    {
-        id: '2',
-        carpoolOptions: "Let's meet at the trailhead",
-        elevationGain: 252,
-        miles: 2.4,
-        name: 'Keyhole via Wild Loop Trail',
-        parkingLocation: 'https://www.google.com/maps/dir/Current+Location/40.41201,-105.15261',
-        preparationNotes: 'The trail may be muddy, bring hiking boots.',
-        expectedRoundTripTime: 60,
-        startingElevation: 5084,
-        time: new Date(Date.now()).toISOString(),
-        url: 'https://www.alltrails.com/explore/trail/us/colorado/keyhole-via-wild-loop-trail'
-    }
-]
-
 const resolvers = {
     Query: {
-        hikes: () => hikes
+        hikes: async (parent, args, context, info) => {
+            const payload = await client.query({
+                query: gql`
+                    query ViewHikes {
+                        hikes {
+                            id
+                            carpoolOptions
+                            elevationGain
+                            expectedRoundTripTime
+                            miles
+                            name
+                            parkingLocation
+                            preparationNotes
+                            startingElevation
+                            time
+                            url
+                        }
+                    }
+                `
+            })
+
+            return payload.data.hikes
+        }
     }
 }
 

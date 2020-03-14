@@ -1,10 +1,14 @@
 {
-  "dependencies": {
-    "apollo-server": "2.10.1",
-    "dotenv": "8.2.0",
-    "graphql": "14.6.0"
-  },
-  "scripts": {
-    "start": "node index.js"
-  }
+    "dependencies": {
+        "apollo-cache-inmemory": "1.6.5",
+        "apollo-client": "2.6.8",
+        "apollo-link-http": "1.5.16",
+        "apollo-server": "2.10.1",
+        "dotenv": "8.2.0",
+        "graphql": "14.6.0",
+        "node-fetch": "2.6.0"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
 }
