@@ -38,7 +38,7 @@ const options = {
 
 const typeDefs = gql`
     type Workout {
-        id: INT!
+        id: Int!
         title: String
         startTime: String!
         link: String
