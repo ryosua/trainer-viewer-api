@@ -37,22 +37,15 @@ const options = {
 }
 
 const typeDefs = gql`
-    type Hike {
-        id: ID!
-        carpoolOptions: String
-        elevationGain: Int!
-        expectedRoundTripTime: Int!
-        miles: Float!
-        name: String!
-        parkingLocation: String!
-        preparationNotes: String
-        startingElevation: Int!
-        time: String!
-        url: String
+    type Workout {
+        id: INT!
+        title: String
+        startTime: String!
+        link: String
     }
 
     type Query {
-        hikes: [Hike]
+        workouts: [Workout]
     }
 `
 
@@ -65,29 +58,9 @@ const authenticate = async context => {
 
 const resolvers = {
     Query: {
-        hikes: async (parent, args, context) => {
+        workouts: async (parent, args, context) => {
             // await authenticate(context)
-
-            const payload = await apolloClient.query({
-                query: gql`
-                    query ViewHikes {
-                        hikes {
-                            id
-                            carpoolOptions
-                            elevationGain
-                            expectedRoundTripTime
-                            miles
-                            name
-                            parkingLocation
-                            preparationNotes
-                            startingElevation
-                            time
-                            url
-                        }
-                    }
-                `
-            })
-            return payload.data.hikes
+            return []
         }
     }
 }
