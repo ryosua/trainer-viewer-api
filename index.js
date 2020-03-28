@@ -6,8 +6,11 @@ const { InMemoryCache } = require('apollo-cache-inmemory')
 const { ApolloClient } = require('apollo-client')
 const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
+const Sequelize = require('sequelize')
 
 dotenv.config()
+
+const sequelize = new Sequelize(process.env.DATABASE_URI)
 
 const httpLink = createHttpLink({
     uri: process.env.GRAPH_CMS_ENDPOINT,
@@ -59,8 +62,14 @@ const authenticate = async context => {
 const resolvers = {
     Query: {
         workouts: async (parent, args, context) => {
-            // await authenticate(context)
-            return []
+            const [results] = await sequelize.query('SELECT * FROM workout')
+            const workouts = results.map(({ id, title, start_time, link }) => ({
+                id,
+                title,
+                startTime: start_time,
+                link
+            }))
+            return workouts
         }
     }
 }
@@ -102,4 +111,12 @@ const server = new ApolloServer({
 // The `listen` method launches a web server.
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
+    sequelize
+        .authenticate()
+        .then(() => {
+            console.log('Connection has been established successfully.')
+        })
+        .catch(err => {
+            console.error('Unable to connect to the database:', err)
+        })
 })
