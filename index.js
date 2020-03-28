@@ -52,7 +52,7 @@ const resolvers = {
             const workouts = results.map(({ id, title, start_time, link }) => ({
                 id,
                 title,
-                startTime: start_time,
+                startTime: new Date(start_time).toISOString(),
                 link
             }))
             return workouts
