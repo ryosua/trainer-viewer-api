@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
 const Sequelize = require('sequelize')
+const mapWorkout = require('./sql/mappers/workout')
 
 dotenv.config()
 
@@ -36,6 +37,10 @@ const typeDefs = gql`
     type Query {
         workouts: [Workout]
     }
+
+    type Mutation {
+        addWorkout(title: String, startTime: String!, link: String): Workout
+    }
 `
 
 const authenticate = async context => {
@@ -49,13 +54,22 @@ const resolvers = {
     Query: {
         workouts: async (parent, args, context) => {
             const [results] = await sequelize.query('SELECT * FROM workout')
-            const workouts = results.map(({ id, title, start_time, link }) => ({
-                id,
-                title,
-                startTime: new Date(start_time).toISOString(),
-                link
-            }))
+            const workouts = results.map(mapWorkout)
             return workouts
+        }
+    },
+    Mutation: {
+        addWorkout: async (parent, args, context) => {
+            await authenticate(context)
+
+            const { title, startTime, link } = args
+            const [
+                [result]
+            ] = await sequelize.query(
+                `INSERT INTO workout ( title, start_time, link) VALUES (:title, :start_time, :link) RETURNING id, title, start_time, link`,
+                { replacements: { title, start_time: startTime, link }, type: sequelize.QueryTypes.INSERT }
+            )
+            return mapWorkout(result)
         }
     }
 }
@@ -94,7 +108,6 @@ const server = new ApolloServer({
     introspection: true
 })
 
-// The `listen` method launches a web server.
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`)
     sequelize
