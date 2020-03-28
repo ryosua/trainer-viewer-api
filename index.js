@@ -1,9 +1,5 @@
 const { ApolloServer, gql, AuthenticationError } = require('apollo-server')
 const dotenv = require('dotenv')
-const fetch = require('node-fetch')
-const { createHttpLink } = require('apollo-link-http')
-const { InMemoryCache } = require('apollo-cache-inmemory')
-const { ApolloClient } = require('apollo-client')
 const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
 const Sequelize = require('sequelize')
@@ -11,16 +7,6 @@ const Sequelize = require('sequelize')
 dotenv.config()
 
 const sequelize = new Sequelize(process.env.DATABASE_URI)
-
-const httpLink = createHttpLink({
-    uri: process.env.GRAPH_CMS_ENDPOINT,
-    fetch: fetch
-})
-
-const apolloClient = new ApolloClient({
-    link: httpLink,
-    cache: new InMemoryCache()
-})
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
