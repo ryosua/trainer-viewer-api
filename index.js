@@ -32,7 +32,6 @@ const typeDefs = gql`
         title: String!
         startTime: String!
         link: String!
-        creator: User
     }
 
     type Query {
