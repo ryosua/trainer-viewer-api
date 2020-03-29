@@ -29,9 +29,10 @@ const options = {
 const typeDefs = gql`
     type Workout {
         id: Int!
-        title: String
+        title: String!
         startTime: String!
-        link: String
+        link: String!
+        creator: User
     }
 
     type Query {
@@ -39,7 +40,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addWorkout(title: String, startTime: String!, link: String): Workout
+        addWorkout(title: String!, startTime: String!, link: String!): Workout
     }
 `
 
