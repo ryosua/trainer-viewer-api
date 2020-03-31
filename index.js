@@ -40,7 +40,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addWorkout(title: String!, startTime: String!, link: String!): Workout
+        addWorkout(title: String!, requiredEquipment: String, startTime: String!, link: String!): Workout
     }
 `
 
@@ -63,12 +63,13 @@ const resolvers = {
         addWorkout: async (parent, args, context) => {
             await authenticate(context)
 
-            const { title, startTime, link } = args
-            const [
-                [result]
-            ] = await sequelize.query(
-                `INSERT INTO workout ( title, start_time, link) VALUES (:title, :start_time, :link) RETURNING id, title, start_time, link`,
-                { replacements: { title, start_time: startTime, link }, type: sequelize.QueryTypes.INSERT }
+            const { title, requiredEquipment, startTime, link } = args
+            const [[result]] = await sequelize.query(
+                `INSERT INTO workout ( title, required_equipment, start_time, link) VALUES (:title, :required_equipment, :start_time, :link) RETURNING id, title, required_equipment, start_time, link`,
+                {
+                    replacements: { title, required_equipment: requiredEquipment, start_time: startTime, link },
+                    type: sequelize.QueryTypes.INSERT
+                }
             )
             return mapWorkout(result)
         }
