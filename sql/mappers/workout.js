@@ -1,6 +1,7 @@
-const map = ({ id, title, start_time, link }) => ({
+const map = ({ id, title, required_equipment, start_time, link }) => ({
     id,
     title,
+    requiredEquipment: required_equipment || '',
     startTime: new Date(start_time).toISOString(),
     link
 })

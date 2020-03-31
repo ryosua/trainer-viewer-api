@@ -32,6 +32,7 @@ const typeDefs = gql`
         title: String!
         startTime: String!
         link: String!
+        requiredEquipment: String
     }
 
     type Query {
