@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
 const Sequelize = require('sequelize')
 const mapWorkout = require('./sql/mappers/workout')
+const mapWorkoutCategory = require('./sql/mappers/workoutCategory')
 
 dotenv.config()
 
@@ -33,10 +34,17 @@ const typeDefs = gql`
         startTime: String!
         link: String!
         requiredEquipment: String
+        categories: [WorkoutCategory]!
+    }
+
+    type WorkoutCategory {
+        id: Int!
+        title: String!
     }
 
     type Query {
         workouts: [Workout]
+        workoutCategories: [WorkoutCategory]
     }
 
     type Mutation {
@@ -57,6 +65,11 @@ const resolvers = {
             const [results] = await sequelize.query('SELECT * FROM workout')
             const workouts = results.map(mapWorkout)
             return workouts
+        },
+        workoutCategories: async (parent, args, context) => {
+            const [results] = await sequelize.query('SELECT * FROM workout_category')
+            const workoutCategories = results.map(mapWorkoutCategory)
+            return workoutCategories
         }
     },
     Mutation: {
