@@ -2,11 +2,9 @@ const { ApolloServer, gql, AuthenticationError } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
 
-const orm = require('./orm')
-const mapWorkout = require('./sql/mappers/workout')
 const addWorkout = require('./db/write/addWorkout')
 const getWorkoutCategories = require('./db/read/getWorkoutCategories')
-const getAllWorkoutCategoriesWithWorkoutId = require('./db/read/getAllWorkoutCategoriesWithWorkoutId')
+const getWorkouts = require('./db/read/getWorkouts')
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
@@ -65,13 +63,11 @@ const authenticate = async (context) => {
 
 const resolvers = {
     Query: {
-        workouts: async (parent, args, context) => {
-            const workoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
-            const [workoutRecords] = await orm.query('SELECT * FROM workout')
-            const workouts = workoutRecords.map((workout) => mapWorkout(workout, workoutCategories))
+        workouts: async () => {
+            const workouts = await getWorkouts()
             return workouts
         },
-        workoutCategories: async (parent, args, context) => {
+        workoutCategories: async () => {
             const workoutCategories = await getWorkoutCategories()
             return workoutCategories
         }
