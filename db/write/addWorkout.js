@@ -8,6 +8,10 @@ const associateWorkoutCategoriesWithWorkout = require('./associateWorkoutCategor
 const addWorkout = async (args) => {
     const { title, requiredEquipment, startTime, link, workoutCategories } = args
 
+    if (workoutCategories.length <= 0 || workoutCategories.length > 2) {
+        throw new Error('You must select at least one category and most two categories.')
+    }
+
     // Validate that the workout categories are in the database.
     const allWorkoutCategories = await getWorkoutCategories()
     const allWorkoutCategoriesIds = allWorkoutCategories.map((workoutCategory) => Number(workoutCategory.id))

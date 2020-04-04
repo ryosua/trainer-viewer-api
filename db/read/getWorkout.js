@@ -4,7 +4,7 @@ const getAllWorkoutCategoriesWithWorkoutId = require('./getAllWorkoutCategoriesW
 
 const getWorkout = async (id) => {
     const workoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
-    const [[workoutRecord]] = await orm.query('SELECT * FROM workout where id = :id', {
+    const [workoutRecord] = await orm.query('SELECT * FROM workout where id = :id', {
         replacements: { id },
         type: orm.QueryTypes.SELECT
     })
