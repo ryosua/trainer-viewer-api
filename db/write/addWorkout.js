@@ -1,14 +1,14 @@
 const intersection = require('lodash/intersection')
 
 const orm = require('../../orm')
-const mapWorkout = require('../../sql/mappers/workout')
+const getWorkout = require('../read/getWorkout')
 const getWorkoutCategories = require('../read/getWorkoutCategories')
-const getAllWorkoutCategoriesWithWorkoutId = require('../read/getAllWorkoutCategoriesWithWorkoutId')
+const associateWorkoutCategoriesWithWorkout = require('./associateWorkoutCategoriesWithWorkout')
 
 const addWorkout = async (args) => {
     const { title, requiredEquipment, startTime, link, workoutCategories } = args
 
-    // todo - Validate that the workout categories are in the database.
+    // Validate that the workout categories are in the database.
     const allWorkoutCategories = await getWorkoutCategories()
     const allWorkoutCategoriesIds = allWorkoutCategories.map((workoutCategory) => Number(workoutCategory.id))
     const validCategories = intersection(workoutCategories, allWorkoutCategoriesIds)
@@ -16,23 +16,24 @@ const addWorkout = async (args) => {
         throw new Error('Invalid workout category.')
     }
 
-    const [[result]] = await orm.query(
+    const [[workoutRecord]] = await orm.query(
         `INSERT INTO workout (title, ${
             requiredEquipment ? 'required_equipment,' : ''
         } start_time, link) VALUES (:title, ${
             requiredEquipment ? 'required_equipment,' : ''
-        } :start_time, :link) RETURNING id, title, required_equipment, start_time, link`,
+        } :start_time, :link) RETURNING id`,
         {
             replacements: { title, required_equipment: requiredEquipment, start_time: startTime, link },
             type: orm.QueryTypes.INSERT
         }
     )
 
-    const mappedWorkoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
+    // Insert records into workout_workout_category.
+    const workoutId = workoutRecord.id
+    associateWorkoutCategoriesWithWorkout(workoutId, validCategories)
 
-    // todo - Update mutation resolver insert records into workout_workout_category .
-
-    return mapWorkout(result, mappedWorkoutCategories)
+    const updatedWorkout = getWorkout(workoutId)
+    return updatedWorkout
 }
 
 module.exports = addWorkout
