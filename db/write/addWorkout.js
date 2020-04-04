@@ -1,7 +1,8 @@
 const orm = require('../../orm')
 const mapWorkout = require('../../sql/mappers/workout')
+const getAllWorkoutCategoriesWithWorkoutId = require('../read/getAllWorkoutCategoriesWithWorkoutId')
 
-const addWorkout = async (args, mappedWorkoutCategories) => {
+const addWorkout = async (args) => {
     const { title, requiredEquipment, startTime, link, workoutCategories } = args
 
     // todo - Validate that the workout categories are in the database.
@@ -17,6 +18,8 @@ const addWorkout = async (args, mappedWorkoutCategories) => {
             type: orm.QueryTypes.INSERT
         }
     )
+
+    const mappedWorkoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
 
     // todo - Update mutation resolver insert records into workout_workout_category .
 

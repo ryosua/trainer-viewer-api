@@ -4,9 +4,9 @@ const jwksClient = require('jwks-rsa')
 
 const orm = require('./orm')
 const mapWorkout = require('./sql/mappers/workout')
-const mapWorkoutCategory = require('./sql/mappers/workoutCategory')
-const workoutCategoryWithWorkoutId = require('./sql/mappers/workoutCategoryWithWorkoutId')
-const addWorkout = require('./db/insert/addWorkout')
+const addWorkout = require('./db/write/addWorkout')
+const getWorkoutCategories = require('./db/read/getWorkoutCategories')
+const getAllWorkoutCategoriesWithWorkoutId = require('./db/read/getAllWorkoutCategoriesWithWorkoutId')
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
@@ -66,28 +66,20 @@ const authenticate = async (context) => {
 const resolvers = {
     Query: {
         workouts: async (parent, args, context) => {
-            const [
-                workoutCategoryRecords
-            ] = await orm.query(`SELECT workout_category.id, workout_category.title, workout_workout_category.workout_id
-                                FROM workout_category
-                                JOIN workout_workout_category
-                                ON workout_category.id = workout_workout_category.workout_category_id`)
-            const workoutCategories = workoutCategoryRecords.map(workoutCategoryWithWorkoutId)
+            const workoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
             const [workoutRecords] = await orm.query('SELECT * FROM workout')
             const workouts = workoutRecords.map((workout) => mapWorkout(workout, workoutCategories))
             return workouts
         },
         workoutCategories: async (parent, args, context) => {
-            const [results] = await orm.query('SELECT * FROM workout_category')
-            const workoutCategories = results.map(mapWorkoutCategory)
+            const workoutCategories = await getWorkoutCategories()
             return workoutCategories
         }
     },
     Mutation: {
         addWorkout: async (parent, args, context) => {
             await authenticate(context)
-            const workoutCategories = []
-            const workout = await addWorkout(args, workoutCategories)
+            const workout = await addWorkout(args)
             return workout
         }
     }
