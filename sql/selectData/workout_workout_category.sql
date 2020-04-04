@@ -1,5 +1,4 @@
-SELECT workout_category.id, workout_category.title
+SELECT workout_category.id, workout_category.title, workout_workout_category.workout_id
 FROM workout_category
 JOIN workout_workout_category
 ON workout_category.id = workout_workout_category.workout_category_id
-AND workout_id = 1;

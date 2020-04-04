@@ -5,13 +5,15 @@ const jwksClient = require('jwks-rsa')
 const orm = require('./orm')
 const mapWorkout = require('./sql/mappers/workout')
 const mapWorkoutCategory = require('./sql/mappers/workoutCategory')
+const workoutCategoryWithWorkoutId = require('./sql/mappers/workoutCategoryWithWorkoutId')
+const addWorkout = require('./db/insert/addWorkout')
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
 })
 
 function getKey(header, cb) {
-    client.getSigningKey(header.kid, function(err, key) {
+    client.getSigningKey(header.kid, function (err, key) {
         var signingKey = key.publicKey || key.rsaPublicKey
         cb(null, signingKey)
     })
@@ -44,11 +46,17 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addWorkout(title: String!, requiredEquipment: String, startTime: String!, link: String!): Workout
+        addWorkout(
+            title: String!
+            requiredEquipment: String
+            startTime: String!
+            link: String!
+            workoutCategories: [Int]!
+        ): Workout
     }
 `
 
-const authenticate = async context => {
+const authenticate = async (context) => {
     const email = await context.user
     if (!email) {
         throw new AuthenticationError('You must be logged in to do this')
@@ -58,8 +66,15 @@ const authenticate = async context => {
 const resolvers = {
     Query: {
         workouts: async (parent, args, context) => {
-            const [results] = await orm.query('SELECT * FROM workout')
-            const workouts = results.map(mapWorkout)
+            const [
+                workoutCategoryRecords
+            ] = await orm.query(`SELECT workout_category.id, workout_category.title, workout_workout_category.workout_id
+                                FROM workout_category
+                                JOIN workout_workout_category
+                                ON workout_category.id = workout_workout_category.workout_category_id`)
+            const workoutCategories = workoutCategoryRecords.map(workoutCategoryWithWorkoutId)
+            const [workoutRecords] = await orm.query('SELECT * FROM workout')
+            const workouts = workoutRecords.map((workout) => mapWorkout(workout, workoutCategories))
             return workouts
         },
         workoutCategories: async (parent, args, context) => {
@@ -71,16 +86,9 @@ const resolvers = {
     Mutation: {
         addWorkout: async (parent, args, context) => {
             await authenticate(context)
-
-            const { title, requiredEquipment, startTime, link } = args
-            const [[result]] = await orm.query(
-                `INSERT INTO workout ( title, required_equipment, start_time, link) VALUES (:title, :required_equipment, :start_time, :link) RETURNING id, title, required_equipment, start_time, link`,
-                {
-                    replacements: { title, required_equipment: requiredEquipment, start_time: startTime, link },
-                    type: orm.QueryTypes.INSERT
-                }
-            )
-            return mapWorkout(result)
+            const workoutCategories = []
+            const workout = await addWorkout(args, workoutCategories)
+            return workout
         }
     }
 }
@@ -103,7 +111,7 @@ const server = new ApolloServer({
                 }
                 resolve(decoded.email)
             })
-        }).catch(e => {
+        }).catch((e) => {
             if (e.message === noTokenErrorMessage) {
                 // Swallow error. That's ok, they will get an unauth error
             } else {
