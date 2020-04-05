@@ -49,7 +49,7 @@ const typeDefs = gql`
             requiredEquipment: String
             startTime: String!
             link: String!
-            workoutCategories: [Int]!
+            categories: [Int]!
         ): Workout
     }
 `
