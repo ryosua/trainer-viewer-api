@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
 const intersection = require('lodash/intersection')
 
-const addWorkout = require('./db/write/addWorkout')
-const getWorkoutCategories = require('./db/read/getWorkoutCategories')
-const getWorkouts = require('./db/read/getWorkouts')
+const addWorkout = require('../db/write/addWorkout')
+const getWorkoutCategories = require('../db/read/getWorkoutCategories')
+const getWorkouts = require('../db/read/getWorkouts')
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
