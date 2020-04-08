@@ -1,5 +1,5 @@
 const orm = require('../../orm')
-const mapWorkout = require('../../sql/mappers/workout')
+const mapWorkout = require('../mappers/workout')
 const getAllWorkoutCategoriesWithWorkoutId = require('./getAllWorkoutCategoriesWithWorkoutId')
 
 const getWorkout = async (id) => {

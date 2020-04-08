@@ -1,5 +1,5 @@
 const orm = require('../../orm')
-const workoutCategory = require('../../sql/mappers/workoutCategory')
+const workoutCategory = require('../mappers/workoutCategory')
 
 const getWorkoutCategories = async () => {
     const [results] = await orm.query('SELECT * FROM workout_category')
