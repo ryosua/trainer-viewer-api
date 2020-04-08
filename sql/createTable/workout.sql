@@ -3,5 +3,6 @@ CREATE TABLE workout (
     title VARCHAR(1000) NOT NULL,
     required_equipment VARCHAR(1000),
     start_time TIMESTAMP NOT NULL,
-    link VARCHAR(1000) NOT NULL
+    link VARCHAR(1000) NOT NULL,
+    duration SMALLINT NOT NULL
 );
