@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
 const intersection = require('lodash/intersection')
 
+const schema = require('./schema')
 const addWorkout = require('../db/write/addWorkout')
 const getWorkoutCategories = require('../db/read/getWorkoutCategories')
 const getWorkouts = require('../db/read/getWorkouts')
@@ -23,39 +24,6 @@ const options = {
     issuer: `https://${process.env.AUTH0_DOMAIN}/`,
     algorithms: ['RS256']
 }
-
-const typeDefs = gql`
-    type Workout {
-        id: Int!
-        title: String!
-        startTime: String!
-        link: String!
-        requiredEquipment: String
-        categories: [WorkoutCategory]!
-        duration: Int!
-    }
-
-    type WorkoutCategory {
-        id: Int!
-        title: String!
-    }
-
-    type Query {
-        workouts: [Workout]
-        workoutCategories: [WorkoutCategory]
-    }
-
-    type Mutation {
-        addWorkout(
-            title: String!
-            requiredEquipment: String
-            startTime: String!
-            link: String!
-            categories: [Int]!
-            duration: Int!
-        ): Workout
-    }
-`
 
 const authenticate = async (context) => {
     const email = await context.user
@@ -112,7 +80,7 @@ const resolvers = {
 }
 
 const server = new ApolloServer({
-    typeDefs,
+    typeDefs: schema,
     resolvers,
     context: ({ req }) => {
         const token = req.headers.authorization
