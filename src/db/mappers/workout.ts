@@ -1,4 +1,10 @@
-const map = ({ id, title, required_equipment, start_time, link, duration }: any, workoutCategories: any) => ({
+import WorkoutRecord from '../types/Workout'
+import Workout from '../../graphql/types/Workout'
+
+const map = (
+    { id, title, required_equipment, start_time, link, duration }: WorkoutRecord,
+    workoutCategories: any
+): Workout => ({
     id,
     title,
     requiredEquipment: required_equipment || '',

@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server'
 import jwt, { VerifyOptions } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
+import Workout from './types/Workout'
 import schema from './schema'
 import validateAddWorkout from './validators/addWorkout'
 import addWorkout from '../db/write/addWorkout'
@@ -27,7 +28,7 @@ const options: VerifyOptions = {
 
 const resolvers = {
     Query: {
-        workouts: async () => {
+        workouts: async (): Promise<Workout[]> => {
             const workouts = await getWorkouts()
             return workouts
         },
@@ -37,7 +38,7 @@ const resolvers = {
         }
     },
     Mutation: {
-        addWorkout: async (parent: any, args: any, context: any) => {
+        addWorkout: async (parent: any, args: any, context: any): Promise<Workout> => {
             const validCategories = await validateAddWorkout(args, context)
             const workout = await addWorkout(args, validCategories)
             return workout

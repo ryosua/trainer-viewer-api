@@ -1,12 +1,13 @@
 import { QueryTypes } from 'sequelize'
 
+import WorkoutRecord from '../types/Workout'
 import orm from '../../orm'
 import mapWorkout from '../mappers/workout'
 import getAllWorkoutCategoriesWithWorkoutId from './getAllWorkoutCategoriesWithWorkoutId'
 
 const getWorkout = async (id: any) => {
     const workoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
-    const [workoutRecord] = await orm.query('SELECT * FROM workout where id = :id', {
+    const [workoutRecord]: WorkoutRecord[] = await orm.query('SELECT * FROM workout where id = :id', {
         replacements: { id },
         type: QueryTypes.SELECT
     })
