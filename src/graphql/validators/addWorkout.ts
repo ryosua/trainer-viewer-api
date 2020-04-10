@@ -1,7 +1,7 @@
-const intersection = require('lodash/intersection')
+import intersection from 'lodash/intersection'
 
-const getWorkoutCategories = require('../../../db/read/getWorkoutCategories')
-const authenticate = require('./authenticate')
+import getWorkoutCategories from '../../db/read/getWorkoutCategories'
+import authenticate from './authenticate'
 
 const validateAddWorkout = async (args: any, context: any) => {
     await authenticate(context)

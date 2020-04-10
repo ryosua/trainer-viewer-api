@@ -1,6 +1,6 @@
-const orm = require('../../orm')
-const mapWorkout = require('../mappers/workout')
-const getAllWorkoutCategoriesWithWorkoutId = require('./getAllWorkoutCategoriesWithWorkoutId')
+import orm from '../../orm'
+import mapWorkout from '../mappers/workout'
+import getAllWorkoutCategoriesWithWorkoutId from './getAllWorkoutCategoriesWithWorkoutId'
 
 const getWorkouts = async () => {
     const workoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
@@ -9,4 +9,4 @@ const getWorkouts = async () => {
     return workouts
 }
 
-module.exports = getWorkouts
+export default getWorkouts

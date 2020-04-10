@@ -1,5 +1,5 @@
-const orm = require('../../orm')
-const workoutCategoryWithWorkoutId = require('../mappers/workoutCategoryWithWorkoutId')
+import orm from '../../orm'
+import workoutCategoryWithWorkoutId from '../mappers/workoutCategoryWithWorkoutId'
 
 const getAllWorkoutCategoriesWithWorkoutId = async () => {
     const [

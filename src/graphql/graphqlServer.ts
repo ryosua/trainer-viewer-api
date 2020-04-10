@@ -1,25 +1,25 @@
-const { ApolloServer } = require('apollo-server')
-const jwt = require('jsonwebtoken')
-const jwksClient = require('jwks-rsa')
+import { ApolloServer } from 'apollo-server'
+import jwt, { VerifyOptions } from 'jsonwebtoken'
+import jwksClient from 'jwks-rsa'
 
 import schema from './schema'
 import validateAddWorkout from './validators/addWorkout'
-const addWorkout = require('../../db/write/addWorkout')
-const getWorkoutCategories = require('../../db/read/getWorkoutCategories')
-const getWorkouts = require('../../db/read/getWorkouts')
+import addWorkout from '../db/write/addWorkout'
+import getWorkoutCategories from '../db/read/getWorkoutCategories'
+import getWorkouts from '../db/read/getWorkouts'
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
 })
 
-function getKey(header: any, cb: any) {
-    client.getSigningKey(header.kid, function (err: Error, key: any) {
-        var signingKey = key.publicKey || key.rsaPublicKey
-        cb(null, signingKey)
+const getKey = (header: any, callback: Function) => {
+    client.getSigningKey(header.kid, (err, key: jwksClient.SigningKey) => {
+        const signingKey =
+            (key as jwksClient.CertSigningKey).publicKey || (key as jwksClient.RsaSigningKey).rsaPublicKey
+        callback(null, signingKey)
     })
 }
-
-const options = {
+const options: VerifyOptions = {
     audience: process.env.AUTH0_CLIENT_ID,
     issuer: `https://${process.env.AUTH0_DOMAIN}/`,
     algorithms: ['RS256']
@@ -56,7 +56,7 @@ const server = new ApolloServer({
             if (!token) {
                 return reject(new Error(noTokenErrorMessage))
             }
-            jwt.verify(token, getKey, options, (err: Error, decoded: any) => {
+            jwt.verify(token, getKey, options, (err, decoded: any) => {
                 if (err) {
                     return reject(err)
                 }
@@ -78,4 +78,4 @@ const server = new ApolloServer({
     introspection: true
 })
 
-module.exports = server
+export default server

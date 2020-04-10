@@ -21,4 +21,4 @@ const associateWorkoutCategoriesWithWorkout: any = async (workoutId: any, workou
     )
 }
 
-module.exports = associateWorkoutCategoriesWithWorkout
+export default associateWorkoutCategoriesWithWorkout

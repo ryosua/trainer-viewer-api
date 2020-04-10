@@ -41,8 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var orm_1 = __importDefault(require("../../orm"));
 var sequelize_1 = require("sequelize");
-var getWorkout = require('../read/getWorkout');
-var associateWorkoutCategoriesWithWorkout = require('./associateWorkoutCategoriesWithWorkout');
+var getWorkout_1 = __importDefault(require("../read/getWorkout"));
+var associateWorkoutCategoriesWithWorkout_1 = __importDefault(require("./associateWorkoutCategoriesWithWorkout"));
 var addWorkout = function (args, validCategories) { return __awaiter(void 0, void 0, void 0, function () {
     var title, requiredEquipment, startTime, link, duration, workoutRecord, workoutId, updatedWorkout;
     return __generator(this, function (_a) {
@@ -58,10 +58,10 @@ var addWorkout = function (args, validCategories) { return __awaiter(void 0, voi
             case 1:
                 workoutRecord = (_a.sent())[0][0];
                 workoutId = workoutRecord.id;
-                associateWorkoutCategoriesWithWorkout(workoutId, validCategories);
-                updatedWorkout = getWorkout(workoutId);
+                associateWorkoutCategoriesWithWorkout_1.default(workoutId, validCategories);
+                updatedWorkout = getWorkout_1.default(workoutId);
                 return [2 /*return*/, updatedWorkout];
         }
     });
 }); };
-module.exports = addWorkout;
+exports.default = addWorkout;

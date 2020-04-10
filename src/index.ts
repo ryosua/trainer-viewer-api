@@ -1,7 +1,9 @@
-const dotenv = require('dotenv')
+import dotenv from 'dotenv'
+
 dotenv.config()
+
 import orm from './orm'
-const graphqlServer = require('./graphql/graphqlServer')
+import graphqlServer from './graphql/graphqlServer'
 
 graphqlServer.listen({ port: process.env.PORT || 4000 }).then(({ url }: any) => {
     console.log(`🚀 Server ready at ${url}`)

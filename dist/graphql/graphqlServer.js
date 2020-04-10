@@ -39,23 +39,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ApolloServer = require('apollo-server').ApolloServer;
-var jwt = require('jsonwebtoken');
-var jwksClient = require('jwks-rsa');
+var apollo_server_1 = require("apollo-server");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var jwks_rsa_1 = __importDefault(require("jwks-rsa"));
 var schema_1 = __importDefault(require("./schema"));
 var addWorkout_1 = __importDefault(require("./validators/addWorkout"));
-var addWorkout = require('../../db/write/addWorkout');
-var getWorkoutCategories = require('../../db/read/getWorkoutCategories');
-var getWorkouts = require('../../db/read/getWorkouts');
-var client = jwksClient({
+var addWorkout_2 = __importDefault(require("../db/write/addWorkout"));
+var getWorkoutCategories_1 = __importDefault(require("../db/read/getWorkoutCategories"));
+var getWorkouts_1 = __importDefault(require("../db/read/getWorkouts"));
+var client = jwks_rsa_1.default({
     jwksUri: "https://" + process.env.AUTH0_DOMAIN + "/.well-known/jwks.json"
 });
-function getKey(header, cb) {
+var getKey = function (header, callback) {
     client.getSigningKey(header.kid, function (err, key) {
         var signingKey = key.publicKey || key.rsaPublicKey;
-        cb(null, signingKey);
+        callback(null, signingKey);
     });
-}
+};
 var options = {
     audience: process.env.AUTH0_CLIENT_ID,
     issuer: "https://" + process.env.AUTH0_DOMAIN + "/",
@@ -67,7 +67,7 @@ var resolvers = {
             var workouts;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, getWorkouts()];
+                    case 0: return [4 /*yield*/, getWorkouts_1.default()];
                     case 1:
                         workouts = _a.sent();
                         return [2 /*return*/, workouts];
@@ -78,7 +78,7 @@ var resolvers = {
             var workoutCategories;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, getWorkoutCategories()];
+                    case 0: return [4 /*yield*/, getWorkoutCategories_1.default()];
                     case 1:
                         workoutCategories = _a.sent();
                         return [2 /*return*/, workoutCategories];
@@ -94,7 +94,7 @@ var resolvers = {
                     case 0: return [4 /*yield*/, addWorkout_1.default(args, context)];
                     case 1:
                         validCategories = _a.sent();
-                        return [4 /*yield*/, addWorkout(args, validCategories)];
+                        return [4 /*yield*/, addWorkout_2.default(args, validCategories)];
                     case 2:
                         workout = _a.sent();
                         return [2 /*return*/, workout];
@@ -103,7 +103,7 @@ var resolvers = {
         }); }
     }
 };
-var server = new ApolloServer({
+var server = new apollo_server_1.ApolloServer({
     typeDefs: schema_1.default,
     resolvers: resolvers,
     context: function (_a) {
@@ -114,7 +114,7 @@ var server = new ApolloServer({
             if (!token) {
                 return reject(new Error(noTokenErrorMessage));
             }
-            jwt.verify(token, getKey, options, function (err, decoded) {
+            jsonwebtoken_1.default.verify(token, getKey, options, function (err, decoded) {
                 if (err) {
                     return reject(err);
                 }
@@ -135,4 +135,4 @@ var server = new ApolloServer({
     playground: true,
     introspection: true
 });
-module.exports = server;
+exports.default = server;

@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var orm_1 = __importDefault(require("../../orm"));
-var workoutCategory = require('../mappers/workoutCategory');
+var workoutCategory_1 = __importDefault(require("../mappers/workoutCategory"));
 var getWorkoutCategories = function () { return __awaiter(void 0, void 0, void 0, function () {
     var results, workoutCategories;
     return __generator(this, function (_a) {
@@ -48,9 +48,9 @@ var getWorkoutCategories = function () { return __awaiter(void 0, void 0, void 0
             case 0: return [4 /*yield*/, orm_1.default.query('SELECT * FROM workout_category')];
             case 1:
                 results = (_a.sent())[0];
-                workoutCategories = results.map(workoutCategory);
+                workoutCategories = results.map(workoutCategory_1.default);
                 return [2 /*return*/, workoutCategories];
         }
     });
 }); };
-module.exports = getWorkoutCategories;
+exports.default = getWorkoutCategories;

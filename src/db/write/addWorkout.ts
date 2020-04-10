@@ -1,7 +1,7 @@
 import orm from '../../orm'
 import { QueryTypes } from 'sequelize'
-const getWorkout = require('../read/getWorkout')
-const associateWorkoutCategoriesWithWorkout = require('./associateWorkoutCategoriesWithWorkout')
+import getWorkout from '../read/getWorkout'
+import associateWorkoutCategoriesWithWorkout from './associateWorkoutCategoriesWithWorkout'
 
 const addWorkout = async (args: any, validCategories: any) => {
     const { title, requiredEquipment, startTime, link, duration } = args
@@ -26,4 +26,4 @@ const addWorkout = async (args: any, validCategories: any) => {
     return updatedWorkout
 }
 
-module.exports = addWorkout
+export default addWorkout

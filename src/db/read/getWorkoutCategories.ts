@@ -1,5 +1,5 @@
 import orm from '../../orm'
-const workoutCategory = require('../mappers/workoutCategory')
+import workoutCategory from '../mappers/workoutCategory'
 
 const getWorkoutCategories = async () => {
     const [results] = await orm.query('SELECT * FROM workout_category')
@@ -7,4 +7,4 @@ const getWorkoutCategories = async () => {
     return workoutCategories
 }
 
-module.exports = getWorkoutCategories
+export default getWorkoutCategories

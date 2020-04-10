@@ -35,7 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var AuthenticationError = require('apollo-server').AuthenticationError;
+Object.defineProperty(exports, "__esModule", { value: true });
+var apollo_server_1 = require("apollo-server");
 var authenticate = function (context) { return __awaiter(void 0, void 0, void 0, function () {
     var email;
     return __generator(this, function (_a) {
@@ -44,10 +45,10 @@ var authenticate = function (context) { return __awaiter(void 0, void 0, void 0,
             case 1:
                 email = _a.sent();
                 if (!email) {
-                    throw new AuthenticationError('You must be logged in to do this');
+                    throw new apollo_server_1.AuthenticationError('You must be logged in to do this');
                 }
                 return [2 /*return*/];
         }
     });
 }); };
-module.exports = authenticate;
+exports.default = authenticate;

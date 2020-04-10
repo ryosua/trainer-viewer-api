@@ -1,4 +1,4 @@
-const { AuthenticationError } = require('apollo-server')
+import { AuthenticationError } from 'apollo-server'
 
 const authenticate = async (context: any) => {
     const email = await context.user
@@ -7,4 +7,4 @@ const authenticate = async (context: any) => {
     }
 }
 
-module.exports = authenticate
+export default authenticate

@@ -59,4 +59,4 @@ var associateWorkoutCategoriesWithWorkout = function (workoutId, workoutCategori
         }
     });
 }); };
-module.exports = associateWorkoutCategoriesWithWorkout;
+exports.default = associateWorkoutCategoriesWithWorkout;
