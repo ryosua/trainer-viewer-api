@@ -3,9 +3,11 @@ INSERT INTO workout (
     required_equipment,
     start_time,
     link,
-    duration)
-VALUES ('How To Build Muscle At Home: The BEST Full Body Home Workout For Growth',
+    duration,
+    trainer_id)
+VALUES ('Example workout',
         'Water bottle, towel',
         NOW(),
-        'https://www.youtube.com/watch?v=95846CBGU0M',
-        30)
+        'https://www.google.com/search?q=workout',
+        30,
+        1)

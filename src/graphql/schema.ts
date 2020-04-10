@@ -1,14 +1,20 @@
 import { gql } from 'apollo-server'
 
 const typeDefs: any = gql`
+    type User {
+        id: Int!
+        email: String!
+    }
+
     type Workout {
         id: Int!
-        title: String!
-        startTime: String!
-        link: String!
-        requiredEquipment: String
         categories: [WorkoutCategory]!
         duration: Int!
+        link: String!
+        requiredEquipment: String
+        startTime: String!
+        title: String!
+        trainerId: Int!
     }
 
     type WorkoutCategory {
