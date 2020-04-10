@@ -4,7 +4,7 @@ import getWorkoutCategories from '../../db/read/getWorkoutCategories'
 import authenticate from './authenticate'
 
 const validateAddWorkout = async (args: any, context: any) => {
-    await authenticate(context)
+    const user = await authenticate(context)
     const { categories, duration } = args
 
     const durationDivisbleBy10 = duration % 10 === 0
@@ -31,7 +31,7 @@ const validateAddWorkout = async (args: any, context: any) => {
         throw new Error('Invalid workout category.')
     }
 
-    return validCategories
+    return { validCategories, user }
 }
 
 export default validateAddWorkout

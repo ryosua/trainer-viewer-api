@@ -39,8 +39,8 @@ const resolvers = {
     },
     Mutation: {
         addWorkout: async (parent: any, args: any, context: any): Promise<Workout> => {
-            const validCategories = await validateAddWorkout(args, context)
-            const workout = await addWorkout(args, validCategories)
+            const { validCategories, user } = await validateAddWorkout(args, context)
+            const workout = await addWorkout(args, validCategories, user)
             return workout
         }
     }

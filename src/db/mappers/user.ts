@@ -1,6 +1,8 @@
 import UserRecord from '../types/UserRecord'
 import User from '../../graphql/types/User'
 
-const map = (userRecord: UserRecord): User => userRecord
+const map = ({ id }: UserRecord): User => ({
+    id
+})
 
 export default map
