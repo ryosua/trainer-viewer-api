@@ -1,4 +1,4 @@
-interface Workout {
+interface WorkoutRecord {
     id: Number
     duration: Number
     link: String
@@ -7,4 +7,4 @@ interface Workout {
     title: String
 }
 
-export default Workout
+export default WorkoutRecord

@@ -1,4 +1,4 @@
-import WorkoutRecord from '../types/Workout'
+import WorkoutRecord from '../types/WorkoutRecord'
 import Workout from '../../graphql/types/Workout'
 
 const map = (

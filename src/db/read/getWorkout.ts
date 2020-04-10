@@ -1,6 +1,6 @@
 import { QueryTypes } from 'sequelize'
 
-import WorkoutRecord from '../types/Workout'
+import WorkoutRecord from '../types/WorkoutRecord'
 import orm from '../../orm'
 import mapWorkout from '../mappers/workout'
 import getAllWorkoutCategoriesWithWorkoutId from './getAllWorkoutCategoriesWithWorkoutId'
