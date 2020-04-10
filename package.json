@@ -11,7 +11,8 @@
     "scripts": {
         "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
         "build": "tsc",
-        "start": "node dist dist/index.js"
+        "start": "node dist dist/index.js",
+        "postinstall": "npm run build"
     },
     "devDependencies": {
         "@types/bluebird": "3.5.30",
