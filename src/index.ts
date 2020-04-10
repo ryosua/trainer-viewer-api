@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import wakeUpDyno from './wakeUpDyno'
 
 dotenv.config()
 
@@ -10,6 +11,7 @@ graphqlServer.listen({ port: process.env.PORT || 4000 }).then(({ url }: any) => 
     orm.authenticate()
         .then(() => {
             console.log('Connection has been established successfully.')
+            wakeUpDyno(process.env.DYNO_URL ?? '')
         })
         .catch((err: Error) => {
             console.error('Unable to connect to the database:', err)
