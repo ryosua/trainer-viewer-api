@@ -1,19 +1,19 @@
-const { ApolloServer, gql, AuthenticationError } = require('apollo-server')
+const { ApolloServer } = require('apollo-server')
 const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
 
-const schema = require('./schema')
-const validateAddWorkout = require('./validators/addWorkout')
-const addWorkout = require('../db/write/addWorkout')
-const getWorkoutCategories = require('../db/read/getWorkoutCategories')
-const getWorkouts = require('../db/read/getWorkouts')
+import schema from './schema'
+import validateAddWorkout from './validators/addWorkout'
+const addWorkout = require('../../db/write/addWorkout')
+const getWorkoutCategories = require('../../db/read/getWorkoutCategories')
+const getWorkouts = require('../../db/read/getWorkouts')
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
 })
 
-function getKey(header, cb) {
-    client.getSigningKey(header.kid, function (err, key) {
+function getKey(header: any, cb: any) {
+    client.getSigningKey(header.kid, function (err: Error, key: any) {
         var signingKey = key.publicKey || key.rsaPublicKey
         cb(null, signingKey)
     })
@@ -37,7 +37,7 @@ const resolvers = {
         }
     },
     Mutation: {
-        addWorkout: async (parent, args, context) => {
+        addWorkout: async (parent: any, args: any, context: any) => {
             const validCategories = await validateAddWorkout(args, context)
             const workout = await addWorkout(args, validCategories)
             return workout
@@ -48,7 +48,7 @@ const resolvers = {
 const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
-    context: ({ req }) => {
+    context: ({ req }: any) => {
         const token = req.headers.authorization
         const noTokenErrorMessage = 'no token'
 
@@ -56,7 +56,7 @@ const server = new ApolloServer({
             if (!token) {
                 return reject(new Error(noTokenErrorMessage))
             }
-            jwt.verify(token, getKey, options, (err, decoded) => {
+            jwt.verify(token, getKey, options, (err: Error, decoded: any) => {
                 if (err) {
                     return reject(err)
                 }

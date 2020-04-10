@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server')
 
-const typeDefs = gql`
+const typeDefs: any = gql`
     type Workout {
         id: Int!
         title: String!
@@ -33,4 +33,4 @@ const typeDefs = gql`
     }
 `
 
-module.exports = typeDefs
+export default typeDefs

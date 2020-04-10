@@ -1,22 +1,22 @@
-const intersection = require('lodash/intersection')
+import { QueryTypes } from 'sequelize'
 
-const orm = require('../../orm')
+import orm from '../../orm'
 
-const getWorkoutInsertString = (workoutCategories) =>
+const getWorkoutInsertString = (workoutCategories: any) =>
     workoutCategories.reduce(
-        (accumulator, workoutCategoryId, index) =>
+        (accumulator: Function, workoutCategoryId: any, index: Number) =>
             accumulator + `(:workout_id, ${workoutCategoryId})${index === workoutCategories.length - 1 ? '' : ','}`,
         ''
     )
 
-const associateWorkoutCategoriesWithWorkout = async (workoutId, workoutCategories) => {
+const associateWorkoutCategoriesWithWorkout: any = async (workoutId: any, workoutCategories: any) => {
     await orm.query(
         `INSERT INTO workout_workout_category (workout_id, workout_category_id) VALUES ${getWorkoutInsertString(
             workoutCategories
         )}`,
         {
             replacements: { workout_id: workoutId },
-            type: orm.QueryTypes.INSERT
+            type: QueryTypes.INSERT
         }
     )
 }

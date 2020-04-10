@@ -1,9 +1,9 @@
 const intersection = require('lodash/intersection')
 
-const getWorkoutCategories = require('../../db/read/getWorkoutCategories')
+const getWorkoutCategories = require('../../../db/read/getWorkoutCategories')
 const authenticate = require('./authenticate')
 
-const validateAddWorkout = async (args, context) => {
+const validateAddWorkout = async (args: any, context: any) => {
     await authenticate(context)
     const { categories, duration } = args
 
@@ -25,7 +25,7 @@ const validateAddWorkout = async (args, context) => {
 
     // Validate that the workout categories are in the database.
     const allWorkoutCategories = await getWorkoutCategories()
-    const allWorkoutCategoriesIds = allWorkoutCategories.map((workoutCategory) => Number(workoutCategory.id))
+    const allWorkoutCategoriesIds = allWorkoutCategories.map((workoutCategory: any) => Number(workoutCategory.id))
     const validCategories = intersection(categories, allWorkoutCategoriesIds)
     if (categories.length !== validCategories.length) {
         throw new Error('Invalid workout category.')
@@ -34,4 +34,4 @@ const validateAddWorkout = async (args, context) => {
     return validCategories
 }
 
-module.exports = validateAddWorkout
+export default validateAddWorkout

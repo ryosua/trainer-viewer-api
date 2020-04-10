@@ -2,7 +2,7 @@ const orm = require('../../orm')
 const mapWorkout = require('../mappers/workout')
 const getAllWorkoutCategoriesWithWorkoutId = require('./getAllWorkoutCategoriesWithWorkoutId')
 
-const getWorkout = async (id) => {
+const getWorkout = async (id: any) => {
     const workoutCategories = await getAllWorkoutCategoriesWithWorkoutId()
     const [workoutRecord] = await orm.query('SELECT * FROM workout where id = :id', {
         replacements: { id },
@@ -12,4 +12,4 @@ const getWorkout = async (id) => {
     return workout
 }
 
-module.exports = getWorkout
+export default getWorkout

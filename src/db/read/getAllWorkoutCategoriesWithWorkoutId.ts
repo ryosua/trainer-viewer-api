@@ -12,4 +12,4 @@ const getAllWorkoutCategoriesWithWorkoutId = async () => {
     return workoutCategories
 }
 
-module.exports = getAllWorkoutCategoriesWithWorkoutId
+export default getAllWorkoutCategoriesWithWorkoutId

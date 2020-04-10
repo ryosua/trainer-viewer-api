@@ -1,15 +1,15 @@
 const dotenv = require('dotenv')
 dotenv.config()
-const orm = require('./orm')
-const server = require('./graphql/graphqlServer')
+import orm from './orm'
+const graphqlServer = require('./graphql/graphqlServer')
 
-server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+graphqlServer.listen({ port: process.env.PORT || 4000 }).then(({ url }: any) => {
     console.log(`🚀 Server ready at ${url}`)
     orm.authenticate()
         .then(() => {
             console.log('Connection has been established successfully.')
         })
-        .catch((err) => {
+        .catch((err: Error) => {
             console.error('Unable to connect to the database:', err)
         })
 })

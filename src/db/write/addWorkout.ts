@@ -1,11 +1,12 @@
-const orm = require('../../orm')
+import orm from '../../orm'
+import { QueryTypes } from 'sequelize'
 const getWorkout = require('../read/getWorkout')
 const associateWorkoutCategoriesWithWorkout = require('./associateWorkoutCategoriesWithWorkout')
 
-const addWorkout = async (args, validCategories) => {
+const addWorkout = async (args: any, validCategories: any) => {
     const { title, requiredEquipment, startTime, link, duration } = args
 
-    const [[workoutRecord]] = await orm.query(
+    const [[workoutRecord]]: any = await orm.query(
         `INSERT INTO workout (title, ${
             requiredEquipment ? 'required_equipment,' : ''
         } start_time, link, duration) VALUES (:title, ${
@@ -13,7 +14,7 @@ const addWorkout = async (args, validCategories) => {
         } :start_time, :link, :duration) RETURNING id`,
         {
             replacements: { title, required_equipment: requiredEquipment, start_time: startTime, link, duration },
-            type: orm.QueryTypes.INSERT
+            type: QueryTypes.INSERT
         }
     )
 
