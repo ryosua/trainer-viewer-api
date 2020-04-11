@@ -21,6 +21,11 @@ const typeDefs: any = gql`
         title: String!
     }
 
+    type ReportedWorkout {
+        reporter: User!
+        workout: Workout!
+    }
+
     type Query {
         workouts: [Workout]
         workoutCategories: [WorkoutCategory]
@@ -35,6 +40,8 @@ const typeDefs: any = gql`
             categories: [Int]!
             duration: Int!
         ): Workout
+
+        reportWorkout(workoutId: Int!): ReportedWorkout
     }
 `
 
