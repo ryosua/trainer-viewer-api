@@ -3,7 +3,6 @@ import { gql } from 'apollo-server'
 const typeDefs: any = gql`
     type User {
         id: Int!
-        email: String!
     }
 
     type Workout {
