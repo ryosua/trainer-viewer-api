@@ -1,6 +1,5 @@
 interface UserRecord {
-    id: Number
-    email: String
+    id: number
 }
 
 export default UserRecord

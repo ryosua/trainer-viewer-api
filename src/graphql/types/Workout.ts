@@ -1,3 +1,5 @@
+import User from './User'
+
 interface Workout {
     id: Number
     title: String
@@ -6,7 +8,7 @@ interface Workout {
     requiredEquipment: String
     categories: [any]
     duration: Number
-    trainerId: Number
+    trainer: User
 }
 
 export default Workout

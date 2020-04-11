@@ -13,7 +13,7 @@ const typeDefs: any = gql`
         requiredEquipment: String
         startTime: String!
         title: String!
-        trainerId: Int!
+        trainer: User!
     }
 
     type WorkoutCategory {
@@ -22,8 +22,10 @@ const typeDefs: any = gql`
     }
 
     type ReportedWorkout {
+        id: Int!
         reporter: User!
         workout: Workout!
+        reason: String!
     }
 
     type Query {
@@ -41,7 +43,7 @@ const typeDefs: any = gql`
             duration: Int!
         ): Workout
 
-        reportWorkout(workoutId: Int!): ReportedWorkout
+        reportWorkout(workoutId: Int!, reason: String!): ReportedWorkout
     }
 `
 

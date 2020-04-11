@@ -1,11 +1,11 @@
 interface WorkoutRecord {
-    id: Number
-    duration: Number
-    link: String
-    required_equipment: String
+    id: number
+    duration: number
+    link: string
+    required_equipment: string
     start_time: Date
-    title: String
-    trainer_id: Number
+    title: string
+    trainer_id: number
 }
 
 export default WorkoutRecord

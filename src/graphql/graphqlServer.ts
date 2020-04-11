@@ -2,11 +2,15 @@ import { ApolloServer } from 'apollo-server'
 import jwt, { VerifyOptions } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
+import ReportedWorkout from './types/ReportedWorkout'
 import Workout from './types/Workout'
 import schema from './schema'
+import authenticate from './validators/authenticate'
 import validateAddWorkout from './validators/addWorkout'
+import addReportedWorkout from '../db/write/addReportedWorkout'
 import addWorkout from '../db/write/addWorkout'
 import getWorkoutCategories from '../db/read/getWorkoutCategories'
+import getWorkout from '../db/read/getWorkout'
 import getWorkouts from '../db/read/getWorkouts'
 
 const client = jwksClient({
@@ -42,6 +46,13 @@ const resolvers = {
             const { validCategories, user } = await validateAddWorkout(args, context)
             const workout = await addWorkout(args, validCategories, user)
             return workout
+        },
+        reportWorkout: async (parent: any, args: any, context: any): Promise<ReportedWorkout> => {
+            const { workoutId, reason } = args
+            const reporter = await authenticate(context)
+            const workout = await getWorkout(workoutId)
+            const reportedWorkout = await addReportedWorkout(workout, reporter, reason)
+            return reportedWorkout
         }
     }
 }

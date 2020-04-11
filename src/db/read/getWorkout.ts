@@ -11,6 +11,10 @@ const getWorkout = async (id: any) => {
         replacements: { id },
         type: QueryTypes.SELECT
     })
+
+    if (!workoutRecord) {
+        throw new Error('Workout not found')
+    }
     const workout = mapWorkout(workoutRecord, workoutCategories)
     return workout
 }
