@@ -1,7 +1,9 @@
 import { QueryTypes } from 'sequelize'
 
 import WorkoutRecord from '../types/WorkoutRecord'
+import UserRecord from '../types/UserRecord'
 import orm from '../../orm'
+import mapUser from '../mappers/user'
 import mapWorkout from '../mappers/workout'
 import getAllWorkoutCategoriesWithWorkoutId from './getAllWorkoutCategoriesWithWorkoutId'
 
@@ -15,7 +17,19 @@ const getWorkout = async (id: any) => {
     if (!workoutRecord) {
         throw new Error('Workout not found')
     }
-    const workout = mapWorkout(workoutRecord, workoutCategories)
+
+    const [userRecord]: UserRecord[] = await orm.query('SELECT * FROM person where id = :trainer_id', {
+        replacements: { trainer_id: workoutRecord.trainer_id },
+        type: QueryTypes.SELECT
+    })
+
+    if (!userRecord) {
+        throw new Error('Trainer not found')
+    }
+
+    const trainer = mapUser(userRecord)
+
+    const workout = mapWorkout(workoutRecord, workoutCategories, trainer)
     return workout
 }
 

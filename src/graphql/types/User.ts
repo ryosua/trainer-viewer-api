@@ -1,5 +1,6 @@
 interface User {
-    id: Number
+    id: number
+    dateUserAgreementSigned: string
 }
 
 export default User
