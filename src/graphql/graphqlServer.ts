@@ -3,6 +3,7 @@ import jwt, { VerifyOptions } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
 import ReportedWorkout from './types/ReportedWorkout'
+import User from './types/User'
 import Workout from './types/Workout'
 import schema from './schema'
 import authenticate from './validators/authenticate'
@@ -32,6 +33,10 @@ const options: VerifyOptions = {
 
 const resolvers = {
     Query: {
+        me: async (parent: any, args: any, context: any): Promise<User> => {
+            const me = await authenticate(context)
+            return me
+        },
         workouts: async (): Promise<Workout[]> => {
             const workouts = await getWorkouts()
             return workouts

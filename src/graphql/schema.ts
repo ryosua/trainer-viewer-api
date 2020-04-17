@@ -30,6 +30,7 @@ const typeDefs: any = gql`
     }
 
     type Query {
+        me: User
         workouts: [Workout]
         workoutCategories: [WorkoutCategory]
     }
