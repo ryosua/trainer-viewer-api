@@ -2,9 +2,11 @@ import intersection from 'lodash/intersection'
 
 import getWorkoutCategories from '../../db/read/getWorkoutCategories'
 import authenticate from './authenticate'
+import userAgreementSigned from './userAgreementSigned'
 
 const validateAddWorkout = async (args: any, context: any) => {
     const user = await authenticate(context)
+    userAgreementSigned(user)
     const { categories, duration } = args
 
     const durationDivisbleBy10 = duration % 10 === 0
