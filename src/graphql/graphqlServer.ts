@@ -10,6 +10,7 @@ import authenticate from './validators/authenticate'
 import validateAddWorkout from './validators/addWorkout'
 import addReportedWorkout from '../db/write/addReportedWorkout'
 import addWorkout from '../db/write/addWorkout'
+import signUserAgreement from '../db/write/signUserAgreement'
 import getWorkoutCategories from '../db/read/getWorkoutCategories'
 import getWorkout from '../db/read/getWorkout'
 import getWorkouts from '../db/read/getWorkouts'
@@ -58,6 +59,11 @@ const resolvers = {
             const workout = await getWorkout(workoutId)
             const reportedWorkout = await addReportedWorkout(workout, reporter, reason)
             return reportedWorkout
+        },
+        signUserAgreement: async (parent: any, args: any, context: any): Promise<User> => {
+            const signer = await authenticate(context)
+            const updatedUser = signUserAgreement(signer)
+            return updatedUser
         }
     }
 }

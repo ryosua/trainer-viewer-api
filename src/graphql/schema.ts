@@ -46,6 +46,8 @@ const typeDefs: any = gql`
         ): Workout
 
         reportWorkout(workoutId: Int!, reason: String!): ReportedWorkout
+
+        signUserAgreement: User
     }
 `
 
