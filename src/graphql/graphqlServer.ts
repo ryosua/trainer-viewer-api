@@ -22,13 +22,15 @@ const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
 })
 
-const getKey = (header: any, callback: Function) => {
-    client.getSigningKey(header.kid, (err, key: jwksClient.SigningKey) => {
-        const signingKey =
-            (key as jwksClient.CertSigningKey).publicKey || (key as jwksClient.RsaSigningKey).rsaPublicKey
-        callback(null, signingKey)
+// @ts-ignore
+function getKey(header, cb) {
+    client.getSigningKey(header.kid, function (err, key) {
+        // @ts-ignore
+        var signingKey = key?.publicKey || key?.rsaPublicKey
+        cb(null, signingKey)
     })
 }
+
 const options: VerifyOptions = {
     audience: process.env.AUTH0_CLIENT_ID,
     issuer: `https://${process.env.AUTH0_DOMAIN}/`,
