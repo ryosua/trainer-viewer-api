@@ -45,6 +45,8 @@ const typeDefs: any = gql`
             duration: Int!
         ): Workout
 
+        addUser(email: String!, secret: String!): User
+
         deleteWorkout(workoutId: Int!): Workout
 
         reportWorkout(workoutId: Int!, reason: String!): ReportedWorkout
