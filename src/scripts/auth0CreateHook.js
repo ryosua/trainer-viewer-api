@@ -1,4 +1,4 @@
-function create(user, url, secret) {
+function create(user, cb, url, secret) {
     const axios = require('axios')
     const email = user.email
 
@@ -12,7 +12,7 @@ function create(user, url, secret) {
         method: 'post',
         url: url,
         data: payload
-    })
+    }).then(() => cb())
 }
 
 /**
@@ -36,6 +36,6 @@ function create(user, url, secret) {
   @param {function} cb - function (error, response)
   */
 module.exports = function (user, context, cb) {
-    // create(user, cb, context.webtask.secrets.prod_url)
-    create(user, context.webtask.secrets.test_url, context.webtask.secrets.auth0_hook_secret)
+    // create(user, cb, context.webtask.secrets.prod_url, context.webtask.secrets.auth0_hook_secret)
+    create(user, cb, context.webtask.secrets.test_url, context.webtask.secrets.auth0_hook_secret)
 }
