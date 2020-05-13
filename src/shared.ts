@@ -11,6 +11,7 @@ export type Scalars = {
 export type Mutation = {
    __typename?: 'Mutation';
   addWorkout?: Maybe<Workout>;
+  addUser?: Maybe<User>;
   deleteWorkout?: Maybe<Workout>;
   reportWorkout?: Maybe<ReportedWorkout>;
   signUserAgreement?: Maybe<User>;
@@ -24,6 +25,12 @@ export type MutationAddWorkoutArgs = {
   link: Scalars['String'];
   categories: Array<Maybe<Scalars['Int']>>;
   duration: Scalars['Int'];
+};
+
+
+export type MutationAddUserArgs = {
+  email: Scalars['String'];
+  secret: Scalars['String'];
 };
 
 
