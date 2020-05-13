@@ -1,6 +1,6 @@
 import { AuthenticationError } from 'apollo-server'
 
-import User from '../types/User'
+import { User } from '../../shared'
 import getUser from '../../db/read/getUser'
 
 const authenticate = async (context: any): Promise<User> => {

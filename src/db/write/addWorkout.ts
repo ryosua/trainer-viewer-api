@@ -1,7 +1,7 @@
 import orm from '../../orm'
 import { QueryTypes } from 'sequelize'
 
-import User from '../../graphql/types/User'
+import { User } from '../../shared'
 import getWorkout from '../read/getWorkout'
 import associateWorkoutCategoriesWithWorkout from './associateWorkoutCategoriesWithWorkout'
 

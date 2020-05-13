@@ -1,7 +1,7 @@
 import orm from '../../orm'
 import { QueryTypes } from 'sequelize'
 
-import User from '../../graphql/types/User'
+import { User } from '../../shared'
 import mapUser from '../../db/mappers/user'
 
 const signUserAgreement = async (signer: User) => {

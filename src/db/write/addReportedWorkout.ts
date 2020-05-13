@@ -1,10 +1,8 @@
 import orm from '../../orm'
 import { QueryTypes } from 'sequelize'
 
-import Workout from '../../graphql/types/Workout'
-import User from '../../graphql/types/User'
+import { ReportedWorkout, Workout, User } from '../../shared'
 import mapReportedWorkout from '../mappers/reportedWorkout'
-import ReportedWorkout from '../../graphql/types/ReportedWorkout'
 
 const addReportedWorkout = async (workout: Workout, reporter: User, reason: string): Promise<ReportedWorkout> => {
     const [[reportedWorkoutRecord]]: any = await orm.query(

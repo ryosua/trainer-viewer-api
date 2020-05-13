@@ -1,5 +1,4 @@
-import User from '../types/User'
-import Workout from '../types/Workout'
+import { User, Workout } from '../../shared'
 
 const validateDeleteWorkout = (user: User, workout: Workout): void => {
     const isAuthorized = user.id === workout.trainer.id

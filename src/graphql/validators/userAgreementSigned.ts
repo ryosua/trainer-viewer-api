@@ -1,6 +1,4 @@
-import intersection from 'lodash/intersection'
-
-import User from '../types/User'
+import { User } from '../../shared'
 
 const userAgreementSigned = (user: User) => {
     const userAgreementIsSigned = Boolean(user.dateUserAgreementSigned)

@@ -1,7 +1,5 @@
 import WorkoutRecord from '../types/WorkoutRecord'
-import Workout from '../../graphql/types/Workout'
-import User from '../../graphql/types/User'
-import mapUser from './user'
+import { User, Workout } from '../../shared'
 
 const map = (
     { id, title, required_equipment, start_time, link, duration }: WorkoutRecord,
