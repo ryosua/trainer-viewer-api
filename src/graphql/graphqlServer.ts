@@ -6,7 +6,9 @@ import ReportedWorkout from './types/ReportedWorkout'
 import User from './types/User'
 import Workout from './types/Workout'
 import schema from './schema'
+import addUser from '../db/write/addUser'
 import authenticate from './validators/authenticate'
+import validateAddUser from './validators/addUser'
 import validateUserAgreementSigned from './validators/userAgreementSigned'
 import validateAddWorkout from './validators/addWorkout'
 import validateDeleteWorkout from './validators/validateDeleteWorkout'
@@ -59,6 +61,12 @@ const resolvers = {
             const { validCategories, user } = await validateAddWorkout(args, context)
             const workout = await addWorkout(args, validCategories, user)
             return workout
+        },
+        addUser: async (parent: any, args: any, context: any): Promise<User> => {
+            const { email, secret } = args
+            validateAddUser(secret)
+            const user = await addUser(email)
+            return user
         },
         deleteWorkout: async (parent: any, args: any, context: any): Promise<Workout> => {
             const { workoutId } = args
