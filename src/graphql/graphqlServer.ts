@@ -2,7 +2,15 @@ import { ApolloServer } from 'apollo-server'
 import jwt, { VerifyOptions } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
-import { Workout, User, ReportedWorkout } from '../shared'
+import {
+    Workout,
+    User,
+    ReportedWorkout,
+    MutationAddWorkoutArgs,
+    MutationAddUserArgs,
+    MutationDeleteWorkoutArgs,
+    MutationReportWorkoutArgs
+} from '../shared'
 import schema from './schema'
 import addUser from '../db/write/addUser'
 import authenticate from './validators/authenticate'
@@ -55,18 +63,18 @@ const resolvers = {
         }
     },
     Mutation: {
-        addWorkout: async (parent: any, args: any, context: any): Promise<Workout> => {
+        addWorkout: async (parent: any, args: MutationAddWorkoutArgs, context: any): Promise<Workout> => {
             const { validCategories, user } = await validateAddWorkout(args, context)
             const workout = await addWorkout(args, validCategories, user)
             return workout
         },
-        addUser: async (parent: any, args: any, context: any): Promise<User> => {
+        addUser: async (parent: any, args: MutationAddUserArgs, context: any): Promise<User> => {
             const { email, secret } = args
             validateAddUser(secret)
             const user = await addUser(email)
             return user
         },
-        deleteWorkout: async (parent: any, args: any, context: any): Promise<Workout> => {
+        deleteWorkout: async (parent: any, args: MutationDeleteWorkoutArgs, context: any): Promise<Workout> => {
             const { workoutId } = args
             const user = await authenticate(context)
             const workout = await getWorkout(workoutId)
@@ -74,7 +82,7 @@ const resolvers = {
             deleteWorkout(workoutId)
             return workout
         },
-        reportWorkout: async (parent: any, args: any, context: any): Promise<ReportedWorkout> => {
+        reportWorkout: async (parent: any, args: MutationReportWorkoutArgs, context: any): Promise<ReportedWorkout> => {
             const { workoutId, reason } = args
             const reporter = await authenticate(context)
             validateUserAgreementSigned(reporter)
