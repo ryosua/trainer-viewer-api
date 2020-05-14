@@ -8,7 +8,7 @@ const typeDefs: any = gql`
 
     type Workout {
         id: Int!
-        categories: [WorkoutCategory]!
+        categories: [WorkoutCategory!]!
         duration: Int!
         link: String!
         requiredEquipment: String
@@ -30,9 +30,9 @@ const typeDefs: any = gql`
     }
 
     type Query {
-        me: User
-        workouts: [Workout]
-        workoutCategories: [WorkoutCategory]
+        me: User!
+        workouts: [Workout!]!
+        workoutCategories: [WorkoutCategory!]!
     }
 
     type Mutation {
@@ -45,13 +45,13 @@ const typeDefs: any = gql`
             duration: Int!
         ): Workout
 
-        addUser(email: String!, secret: String!): User
+        addUser(email: String!, secret: String!): User!
 
-        deleteWorkout(workoutId: Int!): Workout
+        deleteWorkout(workoutId: Int!): Workout!
 
-        reportWorkout(workoutId: Int!, reason: String!): ReportedWorkout
+        reportWorkout(workoutId: Int!, reason: String!): ReportedWorkout!
 
-        signUserAgreement: User
+        signUserAgreement: User!
     }
 `
 

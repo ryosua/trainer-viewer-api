@@ -11,10 +11,10 @@ export type Scalars = {
 export type Mutation = {
     __typename?: 'Mutation'
     addWorkout?: Maybe<Workout>
-    addUser?: Maybe<User>
-    deleteWorkout?: Maybe<Workout>
-    reportWorkout?: Maybe<ReportedWorkout>
-    signUserAgreement?: Maybe<User>
+    addUser: User
+    deleteWorkout: Workout
+    reportWorkout: ReportedWorkout
+    signUserAgreement: User
 }
 
 export type MutationAddWorkoutArgs = {
@@ -42,9 +42,9 @@ export type MutationReportWorkoutArgs = {
 
 export type Query = {
     __typename?: 'Query'
-    me?: Maybe<User>
-    workouts?: Maybe<Array<Maybe<Workout>>>
-    workoutCategories?: Maybe<Array<Maybe<WorkoutCategory>>>
+    me: User
+    workouts: Array<Workout>
+    workoutCategories: Array<WorkoutCategory>
 }
 
 export type ReportedWorkout = {
@@ -64,7 +64,7 @@ export type User = {
 export type Workout = {
     __typename?: 'Workout'
     id: Scalars['Int']
-    categories: Array<Maybe<WorkoutCategory>>
+    categories: Array<WorkoutCategory>
     duration: Scalars['Int']
     link: Scalars['String']
     requiredEquipment?: Maybe<Scalars['String']>
