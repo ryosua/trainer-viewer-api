@@ -52,8 +52,6 @@ const resolvers = {
             return me
         },
         workouts: async (parent: any, args: any, context: any): Promise<Workout[]> => {
-            const user = await authenticate(context)
-            validateUserAgreementSigned(user)
             const workouts = await getWorkouts()
             return workouts
         },
